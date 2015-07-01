@@ -8,10 +8,14 @@ SRC_DIR ?= src
 OBJ_DIR ?= objs
 # name of executable (program)
 execable ?= monopoly
+# autodetect projects in SRC_DIR
+PROJECT_DIRS := $(dir $(wildcard $(SRC_DIR)/*/*.hpp))
+# includes
+INCLUDES := $(addprefix -I,$(PROJECT_DIRS))
 # autodetect *.cpp files
-CPPS := $(wildcard $(SRC_DIR)/*.cpp)
+CPPS := $(wildcard $(SRC_DIR)/*/*.cpp) $(wildcard $(SRC_DIR)/main.cpp)
 # all object files
-OBJS := $(addprefix $(OBJ_DIR)/,$(notdir $(CPPS:.cpp=.o)))
+OBJS := $(patsubst $(SRC_DIR)/%,$(OBJ_DIR)/%,$(CPPS:.cpp=.o))
 
 _default: _makeODir $(execable)
 	@echo -e "\e[32mCompiled.\e[0m"
@@ -29,11 +33,12 @@ _setMingw:
 _makeODir:
 	@mkdir -p $(OBJ_DIR)
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
+	@mkdir -p $(dir $@)
 	@echo -e "\e[1;33m$(CXX) $(CXXFLAGS) -c $< -o $@\e[0m"
-	@$(CXX) $(CXXFLAGS) -c $< -o $@
+	@$(CXX) $(INCLUDES) $(CXXFLAGS) -c $< -o $@
 $(execable): $(OBJS)
 	@echo -e "\e[1;32m$(CXX) $(CXXFLAGS) <obj_files> -o $@ $(LIBS) $(SDL_LIBS)\e[0m"
-	@$(CXX) $(CXXFLAGS) $(OBJS) -o $@ $(LIBS) $(SDL_LIBS)
+	@$(CXX) $(INCLUDES) $(CXXFLAGS) $(OBJS) -o $@ $(LIBS) $(SDL_LIBS)
 clean:
 	@rm -rf $(OBJ_DIR)
 	@rm -rf $(execable)

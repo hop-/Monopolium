@@ -8,7 +8,7 @@ class cycle;
 class map
 {
     std::vector<cycle*> m_cycles;
-pubilc:
+public:
     map() = default;
     ~map() = default;
     
