@@ -27,7 +27,7 @@ _setDebug:
 	$(eval CXXFLAGS += -g)
 	@echo -e "\e[33mDebug.\e[0m"
 _setMingw:
-	$(eval execable ?= monopoly.exe)
+	$(eval execable := monopoly.exe)
 	$(eval LIBS += -mwindows -lmingw32 -lsdl2main)
 	@echo -e "\e[32mMinGW.\e[0m"
 _makeODir:
