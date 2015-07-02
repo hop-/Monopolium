@@ -1,3 +1,6 @@
+#ifndef _MAP_HPP_
+#define _MAP_HPP_
+
 #include <vector>
 
 namespace core
@@ -16,3 +19,5 @@ private:
 }; /// class map
 
 } /// namespace core
+
+#endif //_MAP_HPP_
